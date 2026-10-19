@@ -24,6 +24,10 @@ h1 button:hover,h1 button:focus-visible{color:#fff!important;animation:none}
 .question{font-size:13px;font-weight:500;letter-spacing:.045em;margin:28px 0 0}
 .house{font-size:24px;line-height:1;margin-top:26px}
 .spin-face{display:inline-block;transform-style:preserve-3d;backface-visibility:visible;animation:home-spin 9s linear infinite}
+.spin-button{appearance:none;background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer}
+.spin-button .spin-face{animation-duration:9s}
+.spin-button.fast .spin-face{animation-duration:1.5s}
+.spin-button:focus-visible{outline:1px solid currentColor;outline-offset:5px}
 @keyframes home-spin{to{transform:rotateY(360deg)}}
 .site-link{margin-top:29px;font-size:10px;letter-spacing:.025em;color:#fff;text-decoration:underline;text-underline-offset:3px;transition:opacity .25s ease}
 .site-link:hover,.site-link:focus-visible{opacity:.65}
@@ -46,8 +50,8 @@ body.static-mode .site-link{color:#fff}
 <div class="noise" id="noise" aria-hidden="true"><canvas id="noise-canvas"></canvas></div>
 <main><div class="lockup">
 <h1><button type="button" id="home-trigger" aria-label="Toggle television static">@HOME</button></h1>
-<p class="question"><span class="spin-face">Are you there?</span></p>
-<div class="house" role="img" aria-label="House"><span class="spin-face">🏠</span></div>
+<p class="question"><button type="button" class="spin-button" aria-label="Spin Are you there faster"><span class="spin-face">Are you there?</span></button></p>
+<div class="house"><button type="button" class="spin-button" aria-label="Spin house faster"><span class="spin-face" role="img" aria-label="House">🏠</span></button></div>
 <a class="site-link" href="https://eleven59.com/">eleven59.com</a>
 </div></main>
 <script>
@@ -79,6 +83,13 @@ function toggleStatic(){
  if(active){sizeCanvas();frame=requestAnimationFrame(draw)}
  else{cancelAnimationFrame(frame);frame=null}
 }
+document.querySelectorAll('.spin-button').forEach(button=>{
+ button.addEventListener('click',()=>{
+  button.classList.add('fast');
+  clearTimeout(button._spinTimeout);
+  button._spinTimeout=setTimeout(()=>button.classList.remove('fast'),2800);
+ });
+});
 document.getElementById('home-trigger').addEventListener('click',toggleStatic);
 overlay.addEventListener('click',toggleStatic);
 window.addEventListener('resize',()=>{if(active)sizeCanvas()});
