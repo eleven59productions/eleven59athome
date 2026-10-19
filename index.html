@@ -15,6 +15,9 @@
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--red);color:var(--white)}
 body{font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+.topbar{position:fixed;top:22px;left:28px;right:28px;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;color:#fff;font-size:10px;font-weight:800;letter-spacing:1.5px;white-space:nowrap}
+.topbar span{display:block}
+@media(max-width:600px){.topbar{top:22px;left:19px;right:19px;font-size:8px;letter-spacing:1px}}
 main{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:40px 20px}
 .lockup{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;transform:translateY(-4vh)}
 h1{font-size:clamp(56px,9vw,112px);font-weight:800;letter-spacing:-.07em;line-height:1;margin:0;white-space:nowrap}
@@ -47,6 +50,7 @@ body.static-mode .site-link{color:#fff}
 </style>
 </head>
 <body>
+<header class="topbar" aria-label="Los Angeles date and time"><span id="la-date"></span><span>LOS ANGELES</span><span id="la-time"></span></header>
 <div class="noise" id="noise" aria-hidden="true"><canvas id="noise-canvas"></canvas></div>
 <main><div class="lockup">
 <h1><button type="button" id="home-trigger" aria-label="Toggle television static">@HOME</button></h1>
@@ -55,6 +59,13 @@ body.static-mode .site-link{color:#fff}
 <a class="site-link" href="https://eleven59.com/">eleven59.com</a>
 </div></main>
 <script>
+function updateTopbar(){
+ const now=new Date();
+ const fmt=options=>new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',...options}).format(now);
+ document.getElementById('la-date').textContent=fmt({month:'2-digit',day:'2-digit',year:'numeric'});
+ document.getElementById('la-time').textContent=fmt({hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
+}
+updateTopbar();setInterval(updateTopbar,1000);
 const overlay=document.getElementById('noise');
 const canvas=document.getElementById('noise-canvas');
 const ctx=canvas.getContext('2d',{alpha:false});
