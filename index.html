@@ -35,7 +35,8 @@ main{position:relative;z-index:1;pointer-events:none}
 body.static-mode h1 button{animation:home-blink-static 1.304347826s steps(1,end) infinite}
 @keyframes home-blink-static{0%,49.99%{color:#fff}50%,100%{color:#111}}
 body.static-mode h1 button:hover,body.static-mode h1 button:focus-visible{animation-play-state:paused;color:var(--red)!important}
-body.static-mode .question,body.static-mode .site-link{color:#fff}
+body.static-mode .question{color:var(--red)}
+body.static-mode .site-link{color:#fff}
 
 @media(max-width:600px){h1{font-size:clamp(52px,15vw,82px)}.question{margin-top:25px}.house{margin-top:24px}.site-link{margin-top:27px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
